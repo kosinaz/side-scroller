@@ -7,6 +7,11 @@ var playState = {
          */
         game.player = game.add.sprite(924, 288, 'sprites', 'sprite.png');
         game.player.anchor = {x: 0.5, y: 0.5};
+
+        /**
+         * Set the enemies.
+         */
+        game.enemies = game.add.physicsGroup();
         
         /**
          * Set the gravity.
@@ -29,9 +34,22 @@ var playState = {
          * Rise the player.
          */
         if (game.input.activePointer.leftButton.isDown) {
-            game.player.body.velocity.y = -500;
+            game.player.body.velocity.y = -330;
         }
 
+        /**
+         * Spawn an enemy.
+         */
+        if (!game.rnd.between(0, 99)) {
+            var enemy = game.enemies.create(
+                -100, 
+                game.rnd.between(100, 476), 
+                'sprites', 
+                'sprite.png'
+            );
+            enemy.body.velocity.x = 500;
+            enemy.body.allowGravity = false;
+        }
     }
 
 }
