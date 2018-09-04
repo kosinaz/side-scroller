@@ -20,6 +20,7 @@ var playState = {
         game.physics.arcade.gravity.y = 1000;
         game.physics.enable(game.player, Phaser.Physics.ARCADE);
         game.player.body.collideWorldBounds = true;
+        game.player.body.immovable = true;
 
         /**
          * Set the controls.
@@ -58,7 +59,7 @@ var playState = {
             game.player, 
             game.enemies, 
             function (player, enemy) {
-                player.body.velocity.x = 0;
+                //player.body.velocity.x = 0;
                 enemy.kill();
             }
         );
