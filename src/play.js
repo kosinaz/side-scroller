@@ -59,7 +59,6 @@ var playState = {
             game.player, 
             game.enemies, 
             function (player, enemy) {
-                //player.body.velocity.x = 0;
                 enemy.kill();
             }
         );
