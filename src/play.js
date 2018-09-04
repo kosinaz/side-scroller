@@ -50,6 +50,19 @@ var playState = {
             enemy.body.velocity.x = 500;
             enemy.body.allowGravity = false;
         }
+
+        /**
+         * Set collision.
+         */
+        game.physics.arcade.collide(
+            game.player, 
+            game.enemies, 
+            function (player, enemy) {
+                player.body.velocity.x = 0;
+                enemy.kill();
+            }
+        );
+
     }
 
 }
