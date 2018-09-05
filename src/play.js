@@ -50,6 +50,10 @@ var playState = {
             );
             enemy.body.velocity.x = 500;
             enemy.body.allowGravity = false;
+            enemy.checkWorldBounds = true;
+            enemy.events.onOutOfBounds.add(function (enemy) {
+                enemy.destroy();
+            });
         }
 
         /**
@@ -59,7 +63,7 @@ var playState = {
             game.player, 
             game.enemies, 
             function (player, enemy) {
-                enemy.kill();
+                enemy.destroy();
             }
         );
 
