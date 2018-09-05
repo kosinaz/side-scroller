@@ -12,6 +12,11 @@ var playState = {
          * Set the enemies.
          */
         game.enemies = game.add.physicsGroup();
+
+        /**
+         * Set the bullets.
+         */
+        game.bullets = game.add.physicsGroup();
         
         /**
          * Set the gravity.
@@ -27,6 +32,24 @@ var playState = {
          */
         game.input.mouse.capture = true;
 
+        /**
+         * Set the enemy spawner.
+         */
+        game.time.events.loop(500, function () {
+            var enemy = game.enemies.create(
+                -100,
+                game.rnd.between(100, 476),
+                'sprites',
+                'sprite.png'
+            );
+            enemy.body.velocity.x = 500;
+            enemy.body.allowGravity = false;
+            enemy.checkWorldBounds = true;
+            enemy.events.onOutOfBounds.add(function (enemy) {
+                enemy.destroy();
+            });
+        }, this);
+
     },
 
     update: function () {  
@@ -36,25 +59,7 @@ var playState = {
          */
         if (game.input.activePointer.leftButton.isDown) {
             game.player.body.velocity.y = -330;
-        }
-
-        /**
-         * Spawn an enemy.
-         */
-        if (!game.rnd.between(0, 99)) {
-            var enemy = game.enemies.create(
-                -100, 
-                game.rnd.between(100, 476), 
-                'sprites', 
-                'sprite.png'
-            );
-            enemy.body.velocity.x = 500;
-            enemy.body.allowGravity = false;
-            enemy.checkWorldBounds = true;
-            enemy.events.onOutOfBounds.add(function (enemy) {
-                enemy.destroy();
-            });
-        }
+        }        
 
         /**
          * Set collision.
