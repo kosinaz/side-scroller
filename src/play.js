@@ -25,7 +25,6 @@ var playState = {
         game.physics.arcade.gravity.y = 1000;
         game.physics.enable(game.player, Phaser.Physics.ARCADE);
         game.player.body.collideWorldBounds = true;
-        game.player.body.immovable = true;
 
         /**
          * Set the controls.
@@ -35,18 +34,39 @@ var playState = {
         /**
          * Set the enemy spawner.
          */
-        game.time.events.loop(500, function () {
+        game.enemyspawner = game.time.events.loop(500, function () {
             var enemy = game.enemies.create(
                 -100,
-                game.rnd.between(100, 476),
+                game.rnd.between(0, 476),
                 'sprites',
                 'sprite.png'
             );
             enemy.body.velocity.x = 500;
             enemy.body.allowGravity = false;
+            enemy.body.immovable = true;
             enemy.checkWorldBounds = true;
             enemy.events.onOutOfBounds.add(function (enemy) {
                 enemy.destroy();
+            });
+        }, this);
+
+        /**
+         * Set the bullet spawner.
+         */
+        game.bulletspawner = game.time.events.loop(330, function () {
+            var bullet = game.bullets.create(
+                game.player.x - 50,
+                game.player.y,
+                'sprites',
+                'sprite.png'
+            );
+            bullet.scale.set(0.25);
+            bullet.body.velocity.x = -1000;
+            bullet.anchor = {x: 0.5, y: 0.5};
+            bullet.body.allowGravity = false;
+            bullet.checkWorldBounds = true;
+            bullet.events.onOutOfBounds.add(function (bullet) {
+                bullet.destroy();
             });
         }, this);
 
@@ -62,13 +82,30 @@ var playState = {
         }        
 
         /**
-         * Set collision.
+         * Set player collision.
          */
         game.physics.arcade.collide(
             game.player, 
             game.enemies, 
-            function (player, enemy) {
-                enemy.destroy();
+            function (player) {
+                player.kill();
+                game.time.events.remove(game.bulletspawner);
+                game.time.events.remove(game.enemyspawner);
+                game.time.events.add(3000, function () {
+                    game.state.restart();
+                });
+            }
+        );
+
+        /**
+         * Set bullet collision.
+         */
+        game.physics.arcade.collide(
+            game.bullets,
+            game.enemies,
+            function (bullet, enemy) {
+                bullet.kill();
+                enemy.kill();
             }
         );
 
