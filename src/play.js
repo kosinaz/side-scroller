@@ -6,7 +6,7 @@ var playState = {
          * Set the physics.
          */
         game.physics.startSystem(Phaser.Physics.ARCADE);
-        game.physics.arcade.gravity.y = 1000;
+        game.physics.arcade.gravity.y = 300;
 
         /**
          * Set the player.
@@ -46,6 +46,7 @@ var playState = {
          * Set the enemy spawner.
          */        
         game.enemySpawner = game.time.events.loop(500, function () {
+            game.enemies.setAll('body.velocity.y', -100);
             var enemy = game.enemies.create(
                 -100, 
                 game.rnd.between(0, 476),
@@ -53,12 +54,10 @@ var playState = {
                 'sprite.png'
             );
             enemy.body.velocity.x = 500;
-            enemy.body.allowGravity = false;
-            enemy.body.immovable = true;
             enemy.checkWorldBounds = true;
             enemy.events.onOutOfBounds.add(function (enemy) {
                 enemy.destroy();
-            });
+            });  
         });
 
         /**
@@ -77,8 +76,6 @@ var playState = {
             enemyPart.scale.set(0.66);
             enemyPart.body.velocity.x = 400;
             enemyPart.body.velocity.y = yvelocity;
-            enemyPart.body.allowGravity = false;
-            enemyPart.body.immovable = true;
             enemyPart.checkWorldBounds = true;
             enemyPart.events.onOutOfBounds.add(function (enemyPart) {
                 enemyPart.destroy();
@@ -98,7 +95,6 @@ var playState = {
             bullet.scale.set(0.25);
             bullet.body.velocity.x = -1000;
             bullet.anchor = {x: 0.5, y: 0.5};
-            bullet.body.allowGravity = false;
             bullet.checkWorldBounds = true;
             bullet.events.onOutOfBounds.add(function (bullet) {
                 bullet.destroy();
@@ -113,7 +109,7 @@ var playState = {
          * Rise the player.
          */
         if (game.input.activePointer.leftButton.isDown) {
-            game.player.body.velocity.y = -330;
+            game.player.body.velocity.y = -200;
         }        
 
         /**
@@ -133,8 +129,8 @@ var playState = {
             game.enemies,
             function (bullet, enemy) {
                 bullet.kill();
-                game.spawnEnemyPart(enemy.x, enemy.y, 50);
-                game.spawnEnemyPart(enemy.x, enemy.y, -50);
+                game.spawnEnemyPart(enemy.x, enemy.y, 200);
+                game.spawnEnemyPart(enemy.x, enemy.y, -200);
                 enemy.kill();
             }
         );
