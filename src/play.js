@@ -12,6 +12,7 @@ var playState = {
          * Set the enemies.
          */
         game.enemies = game.add.physicsGroup();
+        game.enemyParts = game.add.physicsGroup();
 
         /**
          * Set the bullets.
@@ -33,12 +34,12 @@ var playState = {
 
         /**
          * Set the enemy spawner.
-         */
-        game.enemyspawner = game.time.events.loop(500, function () {
+         */        
+        game.enemySpawner = game.time.events.loop(500, function () {
             var enemy = game.enemies.create(
-                -100,
+                -100, 
                 game.rnd.between(0, 476),
-                'sprites',
+                'sprites', 
                 'sprite.png'
             );
             enemy.body.velocity.x = 500;
@@ -48,12 +49,36 @@ var playState = {
             enemy.events.onOutOfBounds.add(function (enemy) {
                 enemy.destroy();
             });
-        }, this);
+        });
+
+        /**
+         * Spawn a part of a dying enemy.
+         * @param {number} x The x coordinate of the dying enemy.
+         * @param {number} y The y coordinate of the dying enemy.
+         * @param {number} yvelocity The y velocity of the part.
+         */
+        game.spawnEnemyPart = function (x, y, yvelocity) {
+            var enemyPart = game.enemyParts.create(
+                x, 
+                y, 
+                'sprites', 
+                'sprite.png'
+            );
+            enemyPart.scale.set(0.66);
+            enemyPart.body.velocity.x = 400;
+            enemyPart.body.velocity.y = yvelocity;
+            enemyPart.body.allowGravity = false;
+            enemyPart.body.immovable = true;
+            enemyPart.checkWorldBounds = true;
+            enemyPart.events.onOutOfBounds.add(function (enemyPart) {
+                enemyPart.destroy();
+            });
+        };
 
         /**
          * Set the bullet spawner.
          */
-        game.bulletspawner = game.time.events.loop(330, function () {
+        game.bulletSpawner = game.time.events.loop(330, function () {
             var bullet = game.bullets.create(
                 game.player.x - 50,
                 game.player.y,
@@ -68,7 +93,7 @@ var playState = {
             bullet.events.onOutOfBounds.add(function (bullet) {
                 bullet.destroy();
             });
-        }, this);
+        });
 
     },
 
@@ -86,11 +111,11 @@ var playState = {
          */
         game.physics.arcade.collide(
             game.player, 
-            game.enemies, 
+            [game.enemies, game.enemyParts], 
             function (player) {
                 player.kill();
-                game.time.events.remove(game.bulletspawner);
-                game.time.events.remove(game.enemyspawner);
+                game.time.events.remove(game.bulletSpawner);
+                game.time.events.remove(game.enemySpawner);
                 game.time.events.add(3000, function () {
                     game.state.restart();
                 });
@@ -105,7 +130,17 @@ var playState = {
             game.enemies,
             function (bullet, enemy) {
                 bullet.kill();
+                game.spawnEnemyPart(enemy.x, enemy.y, 50);
+                game.spawnEnemyPart(enemy.x, enemy.y, -50);
                 enemy.kill();
+            }
+        );
+        game.physics.arcade.collide(
+            game.bullets,
+            game.enemyParts,
+            function (bullet, enemyPart) {
+                bullet.kill();
+                enemyPart.kill();
             }
         );
 
