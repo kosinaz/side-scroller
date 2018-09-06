@@ -3,10 +3,28 @@ var playState = {
     create: function () {
 
         /**
+         * Set the physics.
+         */
+        game.physics.startSystem(Phaser.Physics.ARCADE);
+        game.physics.arcade.gravity.y = 1000;
+
+        /**
          * Set the player.
          */
         game.player = game.add.sprite(924, 288, 'sprites', 'sprite.png');
         game.player.anchor = {x: 0.5, y: 0.5};
+        game.physics.enable(game.player, Phaser.Physics.ARCADE);
+        game.player.body.collideWorldBounds = true;
+        game.player.body.onWorldBounds = new Phaser.Signal();
+        game.gameOver = function () {
+            game.player.kill();
+            game.time.events.remove(game.bulletSpawner);
+            game.time.events.remove(game.enemySpawner);
+            game.time.events.add(3000, function () {
+                game.state.restart();
+            });
+        }
+        game.player.body.onWorldBounds.add(game.gameOver);
 
         /**
          * Set the enemies.
@@ -18,14 +36,6 @@ var playState = {
          * Set the bullets.
          */
         game.bullets = game.add.physicsGroup();
-        
-        /**
-         * Set the gravity.
-         */
-        game.physics.startSystem(Phaser.Physics.ARCADE);
-        game.physics.arcade.gravity.y = 1000;
-        game.physics.enable(game.player, Phaser.Physics.ARCADE);
-        game.player.body.collideWorldBounds = true;
 
         /**
          * Set the controls.
@@ -112,14 +122,7 @@ var playState = {
         game.physics.arcade.collide(
             game.player, 
             [game.enemies, game.enemyParts], 
-            function (player) {
-                player.kill();
-                game.time.events.remove(game.bulletSpawner);
-                game.time.events.remove(game.enemySpawner);
-                game.time.events.add(3000, function () {
-                    game.state.restart();
-                });
-            }
+            game.gameOver
         );
 
         /**
