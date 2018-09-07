@@ -30,7 +30,6 @@ var playState = {
     }
     game.player.body.onWorldBounds.add(game.gameOver);
     game.win = function () {
-      console.log('win');
       game.state.start('win');
     }
 
@@ -39,19 +38,24 @@ var playState = {
      */
     game.enemies = game.add.physicsGroup();
     game.enemyParts = game.add.physicsGroup();
-    game.enemySpawner = game.time.events.loop(500, function () {
+    game.enemySpawner = game.time.events.loop(
+      300 + 1200 / game.level,
+      function () {        
+        var enemy = game.enemies.create(
+          -100,
+          game.rnd.between(0, 476),
+          'sprites',
+          'sprite.png'
+        );
+        enemy.body.velocity.x = 500;
+        enemy.checkWorldBounds = true;
+        enemy.events.onOutOfBounds.add(function (enemy) {
+          enemy.destroy();
+        });
+      }
+    );
+    game.time.events.loop(500, function () {
       game.enemies.setAll('body.velocity.y', -100);
-      var enemy = game.enemies.create(
-        -100,
-        game.rnd.between(0, 476),
-        'sprites',
-        'sprite.png'
-      );
-      enemy.body.velocity.x = 500;
-      enemy.checkWorldBounds = true;
-      enemy.events.onOutOfBounds.add(function (enemy) {
-        enemy.destroy();
-      });
     });
 
     /**
@@ -115,6 +119,14 @@ var playState = {
      * Set the timer text.
      */
     game.timerLabel = game.add.text(20, 20, '0:00', {
+      font: 'bold 30pt Arial',
+      fill: '#fff'
+    });
+
+    /**
+     * Set the level text.
+     */
+    game.add.text(150, 20, 'Level: ' + game.level, {
       font: 'bold 30pt Arial',
       fill: '#fff'
     });
