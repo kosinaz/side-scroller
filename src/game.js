@@ -9,3 +9,4 @@ var game = new Phaser.Game(1024, 576, Phaser.AUTO, '');
 game.state.add('load', loadState, true);
 game.state.add('menu', menuState);
 game.state.add('play', playState);
+game.state.add('win', winState);

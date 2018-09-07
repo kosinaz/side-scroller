@@ -1,29 +1,20 @@
 var menuState = {
 
-    create: function () {
+  create: function () {
 
-        /**
-         * Set the Start New Game button
-         */
-        this.startNewGameButton = game.add.text(512, 288, 'Start New Game', {
-            font: 'bold 30pt Arial',
-            fill: '#fff'
-        });
-        this.startNewGameButton.inputEnabled = true;
-        this.startNewGameButton.events.onInputUp.add(this.start, this);
-        this.startNewGameButton.anchor.set(0.5, 0.5);
-    },
-    
-    start: function () {
-
-        /**
-         * Start the level.
-         */
-        game.state.start('play');
-    },
-
-    update: function () {
-
-    }
+    /**
+     * Set the Start New Game button
+     */
+    var startNewGameButton = game.add.text(512, 288, 'Start New Game', {
+      font: 'bold 30pt Arial',
+      fill: '#fff'
+    });
+    startNewGameButton.inputEnabled = true;
+    startNewGameButton.events.onInputUp.add(function () {
+      game.level = 1;
+      game.state.start('play');
+    }, this);
+    startNewGameButton.anchor.set(0.5, 0.5);
+  }
 
 };
