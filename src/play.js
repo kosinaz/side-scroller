@@ -12,11 +12,15 @@ var playState = {
          * Set the player.
          */
         game.player = game.add.sprite(924, 288, 'sprites', 'sprite.png');
-        game.player.anchor = {x: 0.5, y: 0.5};
+        game.player.anchor = {
+            x: 0.5,
+            y: 0.5
+        };
         game.physics.enable(game.player, Phaser.Physics.ARCADE);
         game.player.body.collideWorldBounds = true;
         game.player.body.onWorldBounds = new Phaser.Signal();
         game.gameOver = function () {
+            game.timer.pause();
             game.player.kill();
             game.time.events.remove(game.bulletSpawner);
             game.time.events.remove(game.enemySpawner);
@@ -25,39 +29,28 @@ var playState = {
             });
         }
         game.player.body.onWorldBounds.add(game.gameOver);
+        game.win = function () {
+            game.state.restart();
+        }
 
         /**
          * Set the enemies.
          */
         game.enemies = game.add.physicsGroup();
         game.enemyParts = game.add.physicsGroup();
-
-        /**
-         * Set the bullets.
-         */
-        game.bullets = game.add.physicsGroup();
-
-        /**
-         * Set the controls.
-         */
-        game.input.mouse.capture = true;
-
-        /**
-         * Set the enemy spawner.
-         */        
         game.enemySpawner = game.time.events.loop(500, function () {
             game.enemies.setAll('body.velocity.y', -100);
             var enemy = game.enemies.create(
-                -100, 
+                -100,
                 game.rnd.between(0, 476),
-                'sprites', 
+                'sprites',
                 'sprite.png'
             );
             enemy.body.velocity.x = 500;
             enemy.checkWorldBounds = true;
             enemy.events.onOutOfBounds.add(function (enemy) {
                 enemy.destroy();
-            });  
+            });
         });
 
         /**
@@ -68,9 +61,9 @@ var playState = {
          */
         game.spawnEnemyPart = function (x, y, yvelocity) {
             var enemyPart = game.enemyParts.create(
-                x, 
-                y, 
-                'sprites', 
+                x,
+                y,
+                'sprites',
                 'sprite.png'
             );
             enemyPart.scale.set(0.66);
@@ -83,8 +76,9 @@ var playState = {
         };
 
         /**
-         * Set the bullet spawner.
+         * Set the bullets.
          */
+        game.bullets = game.add.physicsGroup();
         game.bulletSpawner = game.time.events.loop(330, function () {
             var bullet = game.bullets.create(
                 game.player.x - 50,
@@ -94,30 +88,53 @@ var playState = {
             );
             bullet.scale.set(0.25);
             bullet.body.velocity.x = -1000;
-            bullet.anchor = {x: 0.5, y: 0.5};
+            bullet.anchor = {
+                x: 0.5,
+                y: 0.5
+            };
             bullet.checkWorldBounds = true;
             bullet.events.onOutOfBounds.add(function (bullet) {
                 bullet.destroy();
             });
         });
 
-    },
-
-    update: function () {  
+        /**
+         * Set the controls.
+         */
+        game.input.mouse.capture = true;
 
         /**
-         * Rise the player.
+         * Set the timer.
+         */
+        game.timer = game.time.create(false);
+        game.timer.add(15000, game.win);
+        game.timer.start();
+
+        /**
+         * Set the timer text.
+         */
+        game.timerLabel = game.add.text(20, 20, '0:00', {
+            font: 'bold 30pt Arial',
+            fill: '#fff'
+        });
+
+    },
+
+    update: function () {
+
+        /**
+         * Raise the player.
          */
         if (game.input.activePointer.leftButton.isDown) {
             game.player.body.velocity.y = -200;
-        }        
+        }
 
         /**
          * Set player collision.
          */
         game.physics.arcade.collide(
-            game.player, 
-            [game.enemies, game.enemyParts], 
+            game.player,
+            [game.enemies, game.enemyParts],
             game.gameOver
         );
 
@@ -142,6 +159,20 @@ var playState = {
                 enemyPart.kill();
             }
         );
+
+        /**
+         * Update the time left.
+         */
+        var time = Math.ceil(game.timer.duration / 1000);
+        game.timerLabel.text = Math.floor(time / 60) + ':' +
+            (time % 60 < 10 ? '0' : '') + time % 60;
+
+        /**
+         * Stop enemy spawning before the end.
+         */
+        if (time > 1 && time < 4) {
+            game.time.events.remove(game.enemySpawner);
+        }
 
     }
 
