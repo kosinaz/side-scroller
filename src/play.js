@@ -174,7 +174,11 @@ var playState = {
     game.physics.arcade.collide(
       game.player,
       [game.enemies, game.enemyParts],
-      game.gameOver
+      function (player, enemy) {
+        player.kill();
+        enemy.kill();
+        game.gameOver();
+      }
     );
 
     /**
