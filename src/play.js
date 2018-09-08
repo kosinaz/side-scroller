@@ -19,6 +19,7 @@ var playState = {
     game.physics.enable(game.player, Phaser.Physics.ARCADE);
     game.player.body.collideWorldBounds = true;
     game.player.body.onWorldBounds = new Phaser.Signal();
+    game.player.body.setCircle(50);
     game.gameOver = function () {
       game.timer.pause();
       game.player.kill();
@@ -42,13 +43,18 @@ var playState = {
       300 + 1200 / game.level,
       function () {        
         var enemy = game.enemies.create(
-          -100,
+          -50,
           game.rnd.between(0, 476),
           'sprites',
           'sprite.png'
         );
         enemy.body.velocity.x = 500;
+        enemy.body.setCircle(50);
         enemy.checkWorldBounds = true;
+        enemy.anchor = {
+          x: 0.5,
+          y: 0.5
+        };
         enemy.events.onOutOfBounds.add(function (enemy) {
           enemy.destroy();
         });
@@ -74,6 +80,11 @@ var playState = {
       enemyPart.scale.set(0.66);
       enemyPart.body.velocity.x = 400;
       enemyPart.body.velocity.y = yvelocity;
+      enemyPart.body.setCircle(50);
+      enemyPart.anchor = {
+        x: 0.5,
+        y: 0.5
+      };
       enemyPart.checkWorldBounds = true;
       enemyPart.events.onOutOfBounds.add(function (enemyPart) {
         enemyPart.destroy();
@@ -92,6 +103,7 @@ var playState = {
         'sprite.png'
       );
       bullet.scale.set(0.25);
+      bullet.body.setCircle(50);
       bullet.body.velocity.x = -1000;
       bullet.anchor = {
         x: 0.5,
@@ -188,5 +200,4 @@ var playState = {
     }
 
   }
-
 }
