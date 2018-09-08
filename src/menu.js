@@ -11,7 +11,10 @@ var menuState = {
     });
     startNewGameButton.inputEnabled = true;
     startNewGameButton.events.onInputUp.add(function () {
+      game.totalEnemiesKilled = 0;
+      game.totalEnemyPartsKilled = 0;
       game.level = 1;
+      game.totalScore = 0;
       game.state.start('play');
     }, this);
     startNewGameButton.anchor.set(0.5, 0.5);

@@ -31,6 +31,9 @@ var playState = {
     }
     game.player.body.onWorldBounds.add(game.gameOver);
     game.win = function () {
+      game.totalScore = game.levelScore;
+      game.totalEnemiesKilled += game.levelEnemiesKilled;
+      game.totalEnemyPartsKilled += game.levelEnemyPartsKilled;
       game.state.start('win');
     }
 
@@ -63,6 +66,8 @@ var playState = {
     game.time.events.loop(500, function () {
       game.enemies.setAll('body.velocity.y', -100);
     });
+    game.levelEnemiesKilled = 0;
+    game.levelEnemyPartsKilled = 0;
 
     /**
      * Spawn a part of a dying enemy.
@@ -143,6 +148,15 @@ var playState = {
       fill: '#fff'
     });
 
+    /**
+     * Set the score text.
+     */
+    game.levelScore = game.totalScore;
+    game.levelScoreLabel = game.add.text(350, 20, 'Score: ' + game.levelScore, {
+      font: 'bold 30pt Arial',
+      fill: '#fff'
+    });
+
   },
 
   update: function () {
@@ -174,6 +188,8 @@ var playState = {
         game.spawnEnemyPart(enemy.x, enemy.y, 200);
         game.spawnEnemyPart(enemy.x, enemy.y, -200);
         enemy.kill();
+        game.levelEnemiesKilled += 1;
+        game.levelScore += 5;
       }
     );
     game.physics.arcade.collide(
@@ -182,6 +198,8 @@ var playState = {
       function (bullet, enemyPart) {
         bullet.kill();
         enemyPart.kill();
+        game.levelEnemyPartsKilled += 1;
+        game.levelScore += 10;
       }
     );
 
@@ -191,6 +209,11 @@ var playState = {
     var time = Math.ceil(game.timer.duration / 1000);
     game.timerLabel.text = Math.floor(time / 60) + ':' +
       (time % 60 < 10 ? '0' : '') + time % 60;
+
+    /**
+     * Update score.
+     */
+    game.levelScoreLabel.text = 'Score: ' + game.levelScore;
 
     /**
      * Stop enemy spawning before the end.

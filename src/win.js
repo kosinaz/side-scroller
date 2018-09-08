@@ -3,9 +3,33 @@ var winState = {
   create: function () {
 
     /**
+     * Set the score labels
+     */
+    game.add.text(512, 88, 'Enemies: ' + game.totalEnemiesKilled + 
+      ' * 5 = ' + game.totalEnemiesKilled * 5, {
+      font: 'bold 30pt Arial',
+      fill: '#fff'
+    }).anchor.set(0.5, 0.5);
+    game.add.text(512, 188, 'Parts: ' + game.totalEnemyPartsKilled + 
+      ' * 10 = ' + game.totalEnemyPartsKilled * 10, {
+      font: 'bold 30pt Arial',
+      fill: '#fff'
+    }).anchor.set(0.5, 0.5);
+    game.add.text(512, 288, 'Level: ' + game.level + 
+      ' * 100 = ' + game.level * 100, {
+      font: 'bold 30pt Arial',
+      fill: '#fff'
+    }).anchor.set(0.5, 0.5);
+    game.totalScore += 100;
+    game.add.text(512, 388, 'Total: ' + game.totalScore, {
+      font: 'bold 30pt Arial',
+      fill: '#fff'
+    }).anchor.set(0.5, 0.5);
+
+    /**
      * Set the Start Next Level button
      */
-    var startNextLevelButton = game.add.text(512, 288, 'Start Next Level', {
+    var startNextLevelButton = game.add.text(512, 488, 'Start Next Level', {
       font: 'bold 30pt Arial',
       fill: '#fff'
     });
