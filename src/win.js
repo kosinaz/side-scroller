@@ -39,6 +39,21 @@ var winState = {
       game.state.start('play');
     }, this);
     startNextLevelButton.anchor.set(0.5, 0.5);
+
+    /**
+     * Set the mute button.
+     */
+    game.muteButton = game.add.text(904, 20, '🕪', {
+      font: 'bold 30pt Arial',
+      fill: '#fff'
+    });
+    game.muteButton.text = game.music.mute ? '🕨' : '🕪';
+    game.muteButton.inputEnabled = true;
+    game.muteButton.events.onInputUp.add(function () {
+      game.music.mute = !game.music.mute;
+      game.muteButton.text = game.music.mute ? '🕨' : '🕪';
+    });
+    
   }
 
 };
