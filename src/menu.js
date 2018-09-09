@@ -16,13 +16,12 @@ var menuState = {
       game.level = 1;
       game.totalScore = 0;
       game.state.start('play');
-    }, this);
-    startNewGameButton.anchor.set(0.5, 0.5);
+    });
 
     /**
      * Set the mute button.
      */
-    game.muteButton = game.add.text(904, 20, '🕪', {
+    game.muteButton = game.add.text(904, 50, '🕪', {
       font: 'bold 30pt Arial',
       fill: '#fff'
     });

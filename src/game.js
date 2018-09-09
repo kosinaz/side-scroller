@@ -10,3 +10,11 @@ game.state.add('load', loadState, true);
 game.state.add('menu', menuState);
 game.state.add('play', playState);
 game.state.add('win', winState);
+
+/**
+ * Set the global settings.
+ */
+PIXI.Sprite.defaultAnchor = {
+  x: 0.5,
+  y: 0.5
+}

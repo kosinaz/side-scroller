@@ -12,10 +12,6 @@ var playState = {
      * Set the player.
      */
     game.player = game.add.sprite(924, 288, 'sprites', 'sprite.png');
-    game.player.anchor = {
-      x: 0.5,
-      y: 0.5
-    };
     game.physics.enable(game.player, Phaser.Physics.ARCADE);
     game.player.body.collideWorldBounds = true;
     game.player.body.onWorldBounds = new Phaser.Signal();
@@ -54,10 +50,6 @@ var playState = {
         enemy.body.velocity.x = 500;
         enemy.body.setCircle(50);
         enemy.checkWorldBounds = true;
-        enemy.anchor = {
-          x: 0.5,
-          y: 0.5
-        };
         enemy.events.onOutOfBounds.add(function (enemy) {
           enemy.destroy();
         });
@@ -86,10 +78,6 @@ var playState = {
       enemyPart.body.velocity.x = 400;
       enemyPart.body.velocity.y = yvelocity;
       enemyPart.body.setCircle(50);
-      enemyPart.anchor = {
-        x: 0.5,
-        y: 0.5
-      };
       enemyPart.checkWorldBounds = true;
       enemyPart.events.onOutOfBounds.add(function (enemyPart) {
         enemyPart.destroy();
@@ -110,10 +98,6 @@ var playState = {
       bullet.scale.set(0.25);
       bullet.body.setCircle(50);
       bullet.body.velocity.x = -1000;
-      bullet.anchor = {
-        x: 0.5,
-        y: 0.5
-      };
       bullet.checkWorldBounds = true;
       bullet.events.onOutOfBounds.add(function (bullet) {
         bullet.destroy();
@@ -135,7 +119,7 @@ var playState = {
     /**
      * Set the timer text.
      */
-    game.timerLabel = game.add.text(20, 20, '0:00', {
+    game.timerLabel = game.add.text(100, 50, '0:00', {
       font: 'bold 30pt Arial',
       fill: '#fff'
     });
@@ -143,7 +127,7 @@ var playState = {
     /**
      * Set the level text.
      */
-    game.add.text(150, 20, 'Level: ' + game.level, {
+    game.add.text(250, 50, 'Level: ' + game.level, {
       font: 'bold 30pt Arial',
       fill: '#fff'
     });
@@ -152,7 +136,7 @@ var playState = {
      * Set the score text.
      */
     game.levelScore = game.totalScore;
-    game.levelScoreLabel = game.add.text(350, 20, 'Score: ' + game.levelScore, {
+    game.levelScoreLabel = game.add.text(450, 50, 'Score: ' + game.levelScore, {
       font: 'bold 30pt Arial',
       fill: '#fff'
     });
@@ -160,7 +144,7 @@ var playState = {
     /**
      * Set the mute button.
      */
-    game.muteButton = game.add.text(904, 20, '🕪', {
+    game.muteButton = game.add.text(904, 50, '🕪', {
       font: 'bold 30pt Arial',
       fill: '#fff'
     });
