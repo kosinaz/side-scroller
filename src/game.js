@@ -18,3 +18,7 @@ PIXI.Sprite.defaultAnchor = {
   x: 0.5,
   y: 0.5
 }
+game.style = {
+  font: 'bold 30pt Arial',
+  fill: 'white'
+}

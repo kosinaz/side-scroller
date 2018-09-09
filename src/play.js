@@ -119,35 +119,23 @@ var playState = {
     /**
      * Set the timer text.
      */
-    game.timerLabel = game.add.text(100, 50, '0:00', {
-      font: 'bold 30pt Arial',
-      fill: '#fff'
-    });
+    game.timerLabel = game.add.text(100, 50, '0:00', game.style);
 
     /**
      * Set the level text.
      */
-    game.add.text(250, 50, 'Level: ' + game.level, {
-      font: 'bold 30pt Arial',
-      fill: '#fff'
-    });
+    game.add.text(250, 50, 'Level: ' + game.level, game.style);
 
     /**
      * Set the score text.
      */
     game.levelScore = game.totalScore;
-    game.levelScoreLabel = game.add.text(450, 50, 'Score: ' + game.levelScore, {
-      font: 'bold 30pt Arial',
-      fill: '#fff'
-    });
+    game.levelScoreLabel = game.add.text(450, 50, 'Score: ' + game.levelScore, game.style);
 
     /**
      * Set the mute button.
      */
-    game.muteButton = game.add.text(904, 50, '🕪', {
-      font: 'bold 30pt Arial',
-      fill: '#fff'
-    });
+    game.muteButton = game.add.text(904, 50, '🕪', game.style);
     game.muteButton.text = game.music.mute ? '🕨' : '🕪';
     game.muteButton.inputEnabled = true;
     game.muteButton.events.onInputUp.add(function () {
