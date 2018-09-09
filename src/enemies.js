@@ -1,7 +1,7 @@
 function createEnemies() {
   game.enemies = game.add.physicsGroup();
   game.enemyParts = game.add.physicsGroup();
-  game.enemySpawner = game.time.events.loop(300 + 1200 / game.level, function () {
+  game.enemySpawner = game.time.events.loop(100 + 1400 / game.level, function () {
     var enemy = game.enemies.create(-50, game.rnd.between(0, 476), 'sprites', 'sprite.png');
     enemy.body.velocity.x = 500;
     enemy.body.setCircle(50);
