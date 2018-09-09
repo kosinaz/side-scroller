@@ -1,3 +1,49 @@
+function loadPlayer(callback) {
+  game.level = 1;
+  game.totalEnemiesKilled = 0;
+  game.totalEnemyPartsKilled = 0;
+  game.totalScore = 0;
+  if (!GJAPI.bActive) {
+    callback();
+    return;
+  }
+  GJAPI.DataStoreFetch(
+    GJAPI.DATA_STORE_USER,
+    'level',
+    function (pResponse) {
+      if (pResponse.success) {
+        game.level = parseInt(pResponse.data, 10);
+        GJAPI.DataStoreFetch(
+          GJAPI.DATA_STORE_USER,
+          'totalEnemiesKilled',
+          function (pResponse) {
+            if (pResponse.success) {
+              game.totalEnemiesKilled = parseInt(pResponse.data, 10);
+              GJAPI.DataStoreFetch(
+                GJAPI.DATA_STORE_USER,
+                'totalEnemyPartsKilled',
+                function (pResponse) {
+                  if (pResponse.success) {
+                    game.totalEnemyPartsKilled = parseInt(pResponse.data, 10);
+                    game.totalScore = (game.level - 1) * 100 + 
+                      game.totalEnemiesKilled * 5 + 
+                      game.totalEnemyPartsKilled * 10;
+                  }
+                  callback();
+                }
+              );
+            } else {
+              callback();
+            }
+          }
+        );
+      } else {
+        callback();
+      }
+    }
+  );
+}
+
 function createPlayer() {
   game.player = game.add.sprite(924, 288, 'sprites', 'sprite.png');
   game.physics.enable(game.player, Phaser.Physics.ARCADE);
@@ -16,9 +62,24 @@ function createPlayer() {
   game.player.body.onWorldBounds.add(game.gameOver);
   game.win = function () {
     game.totalScore = game.levelScore;
+    game.level += 1;
     game.totalScore += 100;
     game.totalEnemiesKilled += game.levelEnemiesKilled;
     game.totalEnemyPartsKilled += game.levelEnemyPartsKilled;
+    if (GJAPI.bActive) {
+      GJAPI.ScoreAdd(373000, game.totalScore, game.totalScore);
+      GJAPI.DataStoreSet(GJAPI.DATA_STORE_USER, 'level', game.level);
+      GJAPI.DataStoreSet(
+        GJAPI.DATA_STORE_USER,
+        'totalEnemiesKilled',
+        game.totalEnemiesKilled
+      );
+      GJAPI.DataStoreSet(
+        GJAPI.DATA_STORE_USER,
+        'totalEnemyPartsKilled',
+        game.totalEnemyPartsKilled
+      );
+    }
     game.state.start('win');
   };
 }

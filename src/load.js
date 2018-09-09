@@ -20,10 +20,9 @@ var loadState = {
      */
     game.music = game.add.audio('music', 0.3, true).play();
 
-    /**
-     * Start the game.
-     */
-    game.state.start('menu');
+    loadPlayer(function () {
+      game.state.start('menu');
+    });
 
   }
 
