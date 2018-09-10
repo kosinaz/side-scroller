@@ -7,6 +7,27 @@ function loadPlayer(callback) {
     callback();
     return;
   }
+  GJAPI.TrophyFetch(GJAPI.TROPHY_ONLY_ACHIEVED, function (pResponse) {
+    var i;
+    if (!pResponse.trophies) {
+      return;
+    }
+    for (i = 0; i < pResponse.trophies.length; ++i) {
+      if (pResponse.trophies[i].id === 98263) {
+        game.bronzeProgress = true;
+      }
+      if (pResponse.trophies[i].id === 98264) {
+        game.silverProgress = true;
+      }
+      if (pResponse.trophies[i].id === 98265) {
+        game.goldProgress = true;
+      }
+      if (pResponse.trophies[i].id === 98266) {
+        game.platinumProgress = true;
+      }
+    }
+
+  });
   GJAPI.DataStoreFetch(
     GJAPI.DATA_STORE_USER,
     'level',
