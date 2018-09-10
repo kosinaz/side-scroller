@@ -13,6 +13,27 @@ var winState = {
       ' * 100 = ' + (game.level - 1) * 100, game.style);
     game.add.text(512, 388, 'Total: ' + game.totalScore, game.style);
 
+    if (game.level > 4 && !game.bronzeProgress) {
+      game.add.text(512, 338, 'Achieved: Bronze progress trophy', game.style);
+      game.bronzeProgress = true;
+      GJAPI.TrophyAchieve(98263);
+    }
+    if (game.level > 9 && !game.silverProgress) {
+      game.add.text(512, 338, 'Achieved: Silver progress trophy', game.style);
+      game.silverProgress = true;
+      GJAPI.TrophyAchieve(98264);
+    }
+    if (game.level > 14 && !game.goldProgress) {
+      game.add.text(512, 338, 'Achieved: Gold progress trophy', game.style);
+      game.goldProgress = true;
+      GJAPI.TrophyAchieve(98265);
+    }
+    if (game.level > 19 && !game.platinumProgress) {
+      game.add.text(512, 338, 'Achieved: Platinum progress trophy', game.style);
+      game.platinumProgress = true;
+      GJAPI.TrophyAchieve(98266);
+    }
+
     createContinueButton();
     createMuteButton();
     
