@@ -13,16 +13,16 @@ function loadPlayer(callback) {
       return;
     }
     for (i = 0; i < pResponse.trophies.length; ++i) {
-      if (pResponse.trophies[i].id === 98263) {
+      if (pResponse.trophies[i].id === '98263') {
         game.bronzeProgress = true;
       }
-      if (pResponse.trophies[i].id === 98264) {
+      if (pResponse.trophies[i].id === '98264') {
         game.silverProgress = true;
       }
-      if (pResponse.trophies[i].id === 98265) {
+      if (pResponse.trophies[i].id === '98265') {
         game.goldProgress = true;
       }
-      if (pResponse.trophies[i].id === 98266) {
+      if (pResponse.trophies[i].id === '98266') {
         game.platinumProgress = true;
       }
     }
