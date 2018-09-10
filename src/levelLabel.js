@@ -1,3 +1,3 @@
 function createLevelLabel() {
-  game.add.text(250, 50, 'Level: ' + game.level, game.style);
+  game.add.text(270, 50, 'Level: ' + game.level, game.style);
 }
